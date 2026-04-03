@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Ravenfall</title>
+
 </head>
 
 <body style="font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: auto;">
