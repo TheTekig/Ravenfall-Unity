@@ -59,13 +59,15 @@ e nem tudo deveria ser salvo.
 <h2>📸 Screenshots</h2>
 
 <p align="center">
-  <img src="screenshot1.png" width="30%"/>
-  <img src="screenshot2.png" width="30%"/>
-  <img src="screenshot3.png" width="30%"/>
+  <img src="./Github - Assets/gif_3.gif" width="80%"/>
+  <img src="./Github - Assets/gif_2.gif" width="30%"/>
+  <img src="./Github - Assets/gif_1.gif" width="30%"/>
+  <img src="./Github - Assets/gif_4.gif" width="30%"/>
 </p>
 
 <p align="center">
-  <i>🚧 Screenshots em desenvolvimento — serão adicionadas em breve</i>
+  <i>🚧 Gifs do desenvolvimento</i><br>
+  <i>• Estão sendo utilizados assets gratuitos da Unity e templates de animações para o desenvolvimento e programação da movimentação</i>
 </p>
 
 <hr>
