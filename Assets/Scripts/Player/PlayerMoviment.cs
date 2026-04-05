@@ -26,6 +26,13 @@ public class PlayerMoviment : MonoBehaviour
     private bool isLanding;
     private bool isJumping;
     private bool isTouchingWall;
+
+    #endregion
+
+    #region PUBLIC GETTERS FOR OTHER SCRIPTS
+    public bool IsLanding => isLanding;
+    public bool IsGrounded => isGrounded;
+    public bool IsMoving => Mathf.Abs(moveInput) > 0.1f;
     #endregion
 
     #region WALL JUMP / JUMP VARIABLES
@@ -72,13 +79,14 @@ public class PlayerMoviment : MonoBehaviour
 
     #endregion
 
-
+    private PlayerAttack attack;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsulecollider2D = GetComponent<CapsuleCollider2D>();
+        attack = GetComponent<PlayerAttack>();
 
         stamina = maxStamina;
     }
@@ -88,11 +96,30 @@ public class PlayerMoviment : MonoBehaviour
     {
         staminaSlider.value = stamina / maxStamina;
 
-        #region Preventing movement during some actions
+        
+
+        #region Checkig inputs and states
+        // Check if the player is grounded
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
+        // Check if the player is touching a wall
+        isTouchingWall = playerWallCollider.IsTouchingLayers(groundLayer);
+        #endregion
         
         if (isLanding) return; // Prevent movement during landing animation
 
-        if(isWallJumping) // Handle wall jump lock timer
+        #region Preventing movement during some actions
+
+        if (attack.IsAttacking)
+        {
+            moveInput = 0f;
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // Stop horizontal movement during attack
+            updateAnimations(false, false); // Update animations to reflect attack state
+            return;
+        }
+        moveInput = Input.GetAxisRaw("Horizontal");
+
+        if (isWallJumping) // Handle wall jump lock timer
         {
             wallJumpTimer -= Time.deltaTime;
             if (wallJumpTimer <= 0)
@@ -102,17 +129,6 @@ public class PlayerMoviment : MonoBehaviour
         }
 
         if (isWallJumping) return; // Prevent movement during wall jump lock time
-        #endregion
-
-        #region Checkig inputs and states
-        //Check horizontal input
-        moveInput = Input.GetAxisRaw("Horizontal");
-
-        // Check if the player is grounded
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-
-        // Check if the player is touching a wall
-        isTouchingWall = playerWallCollider.IsTouchingLayers(groundLayer);
         #endregion
 
         #region Move  - Stamina and Running System
@@ -247,10 +263,10 @@ public class PlayerMoviment : MonoBehaviour
 
         #endregion
 
-        updateAnimations(moveInput, isRunning, isWallSliding);
+        updateAnimations(isRunning, isWallSliding);
     }
 
-    void updateAnimations(float moveInput, bool isRunning, bool isWallSliding)
+    void updateAnimations(bool isRunning, bool isWallSliding)
     {
         float spd = Mathf.Abs(rb.linearVelocity.x);
 
