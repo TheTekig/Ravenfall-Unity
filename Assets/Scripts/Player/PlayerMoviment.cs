@@ -80,6 +80,7 @@ public class PlayerMoviment : MonoBehaviour
     #endregion
 
     private PlayerAttack attack;
+    private PlayerShooting shooting;
 
     void Start()
     {
@@ -87,6 +88,7 @@ public class PlayerMoviment : MonoBehaviour
         animator = GetComponent<Animator>();
         capsulecollider2D = GetComponent<CapsuleCollider2D>();
         attack = GetComponent<PlayerAttack>();
+        shooting = GetComponent<PlayerShooting>();
 
         stamina = maxStamina;
     }
@@ -95,9 +97,6 @@ public class PlayerMoviment : MonoBehaviour
     void Update()
     {
         staminaSlider.value = stamina / maxStamina;
-
-        
-
         #region Checkig inputs and states
         // Check if the player is grounded
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
@@ -109,8 +108,8 @@ public class PlayerMoviment : MonoBehaviour
         if (isLanding) return; // Prevent movement during landing animation
 
         #region Preventing movement during some actions
-
-        if (attack.IsAttacking)
+         
+        if (attack.IsAttacking || shooting.IsAiming)
         {
             moveInput = 0f;
             rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y); // Stop horizontal movement during attack

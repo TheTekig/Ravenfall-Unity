@@ -5,6 +5,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private BoxCollider2D punchHitBox;
     private Animator animator;
     private PlayerMoviment movement; // Novo: impede ataque em certas situações
+    private PlayerShooting shooting; // Novo: impede ataque ao atirar
 
     [SerializeField] float comboResetTime = 1f;
     private int comboStep = 0;
@@ -20,12 +21,13 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMoviment>();
+        shooting = GetComponent<PlayerShooting>();
         punchHitBox.enabled = false;
     }
 
     void Update()
     {
-        bool canAttack = movement.IsGrounded && !movement.IsLanding; // Exemplo de condições para permitir ataque
+        bool canAttack = movement.IsGrounded && !movement.IsLanding && !shooting.IsAiming; // Exemplo de condições para permitir ataque
 
         // Cancela o ataque se o jogador começar a se mover
         if (isAttacking && movement.IsMoving)
