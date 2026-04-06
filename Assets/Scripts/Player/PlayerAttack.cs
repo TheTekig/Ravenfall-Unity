@@ -15,6 +15,9 @@ public class PlayerAttack : MonoBehaviour
     private bool isAttacking;
 
     [SerializeField] private int attackDamage = 1; // Dano do ataque, pode ser configurado no Inspector
+    
+    private WeaponData currentWeapon; // Arma equipada atualmente, para ajustar dano e animação
+
     public bool IsAttacking => isAttacking; // Expõe se está atacando para outros scripts
 
    
@@ -65,6 +68,11 @@ public class PlayerAttack : MonoBehaviour
             isAttacking = false;
             canCombo = false;
         }
+    }
+
+    public void SetWeapon(WeaponData weapon)
+    {
+        currentWeapon = weapon;       
     }
 
     void HandleAttack()

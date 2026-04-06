@@ -13,13 +13,17 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] GameObject aimLight;
 
-    [SerializeField] float bulletSpeed = 10f;
+    [SerializeField] float bulletSpeed;
 
     [SerializeField] float aimConeAngle = 45f; // Ângulo do cone de mira em graus
     [SerializeField] float fireRate = 0.5f; // Tempo entre tiros
 
     private float fireTimer;
     private bool isAiming;
+
+    private WeaponData currentWeapon;
+    private Inventory inventory;
+    private PlayerEquipment equipment;
 
 
     public bool IsAiming => isAiming; // Expõe se o jogador está mirando para outros scripts
@@ -31,6 +35,8 @@ public class PlayerShooting : MonoBehaviour
         movement = GetComponent<PlayerMoviment>();
         attack = GetComponent<PlayerAttack>();  
         impulseSource = GetComponent<CinemachineImpulseSource>();
+        inventory = GetComponent<Inventory>();
+        equipment = GetComponent<PlayerEquipment>();
     }
 
     void Update()
@@ -46,6 +52,11 @@ public class PlayerShooting : MonoBehaviour
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         aimLight.transform.rotation = Quaternion.Euler(0, 0, angle);
+    }
+
+    public void SetWeapon(WeaponData weapon)
+    {
+        currentWeapon = weapon;
     }
 
     void HandleAim()
@@ -73,8 +84,16 @@ public class PlayerShooting : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && fireTimer <= 0f)
         {
-            Shoot();
-            fireTimer = fireRate; // Reseta o timer de tiro
+            if (inventory.HasItem(currentWeapon.ammoType, currentWeapon.ammoPerShot))
+            {
+                Shoot();
+                fireTimer = fireRate; // Reseta o timer de tiro
+            }
+            else
+            {
+                // feedback para o jogador, como um som de "sem munição" ou uma animação de recarga
+                Debug.Log("Sem munição!");
+            }
         }
     }
 
@@ -82,6 +101,7 @@ public class PlayerShooting : MonoBehaviour
     void Shoot()
     {
         animator.SetTrigger("Shoot");
+        inventory.RemoveItem(currentWeapon.ammoType, currentWeapon.ammoPerShot);
         impulseSource.GenerateImpulse();
         //animator.Play("Shooting", 2, 0f);
     }
@@ -107,11 +127,23 @@ public class PlayerShooting : MonoBehaviour
     public void FireBullet()
     {
         
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        GameObject bullet = Instantiate(currentWeapon.projectile, firePoint.position, Quaternion.identity);
+        
+        Vector2 aimDirection = GetAimDirection();
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        Vector2 dir = GetAimDirection();
-        rb.linearVelocity = dir * bulletSpeed;
+
+        rb.linearVelocity = aimDirection * bulletSpeed;
+
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
+        bulletScript.Setup(currentWeapon.damage);
+
+        
+
+
+
     }
+
+    
 
 }
 
