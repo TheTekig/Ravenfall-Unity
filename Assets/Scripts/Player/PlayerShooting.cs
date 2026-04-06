@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -6,6 +7,7 @@ public class PlayerShooting : MonoBehaviour
     private Animator animator;
     private PlayerMoviment movement;
     private PlayerAttack attack;
+    private CinemachineImpulseSource impulseSource;
 
     [SerializeField] Transform firePoint;
     [SerializeField] GameObject bulletPrefab;
@@ -19,6 +21,7 @@ public class PlayerShooting : MonoBehaviour
     private float fireTimer;
     private bool isAiming;
 
+
     public bool IsAiming => isAiming; // Expõe se o jogador está mirando para outros scripts
 
 
@@ -27,6 +30,7 @@ public class PlayerShooting : MonoBehaviour
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMoviment>();
         attack = GetComponent<PlayerAttack>();  
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void Update()
@@ -78,7 +82,8 @@ public class PlayerShooting : MonoBehaviour
     void Shoot()
     {
         animator.SetTrigger("Shoot");
-        animator.Play("Shooting", 2, 0f);
+        impulseSource.GenerateImpulse();
+        //animator.Play("Shooting", 2, 0f);
     }
 
     Vector2 GetAimDirection()
@@ -101,6 +106,7 @@ public class PlayerShooting : MonoBehaviour
 
     public void FireBullet()
     {
+        
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         Vector2 dir = GetAimDirection();

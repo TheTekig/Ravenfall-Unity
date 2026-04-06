@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D punchHitBox;
+    [SerializeField] private HitboxController punchHitBox;
     private Animator animator;
     private PlayerMoviment movement; // Novo: impede ataque em certas situações
     private PlayerShooting shooting; // Novo: impede ataque ao atirar
@@ -13,6 +13,8 @@ public class PlayerAttack : MonoBehaviour
 
     private bool canCombo;
     private bool isAttacking;
+
+    [SerializeField] private int attackDamage = 1; // Dano do ataque, pode ser configurado no Inspector
     public bool IsAttacking => isAttacking; // Expõe se está atacando para outros scripts
 
    
@@ -22,7 +24,8 @@ public class PlayerAttack : MonoBehaviour
         animator = GetComponent<Animator>();
         movement = GetComponent<PlayerMoviment>();
         shooting = GetComponent<PlayerShooting>();
-        punchHitBox.enabled = false;
+        
+        
     }
 
     void Update()
@@ -56,7 +59,6 @@ public class PlayerAttack : MonoBehaviour
         AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(1); // Layer 1 = AttackLayer
         bool inAttackAnim = state.IsName("Attack1") || state.IsName("Attack2") || state.IsName("Attack3");
 
-        punchHitBox.enabled = inAttackAnim;
 
         if (!inAttackAnim && comboTimer <= 0)
         {
@@ -102,7 +104,8 @@ public class PlayerAttack : MonoBehaviour
         isAttacking = false;
         canCombo = false;
         comboStep = 0;
-        punchHitBox.enabled = false;
+        
+
 
         // Reseta os triggers de ataque para não ficarem pendentes na fila do Animator
         animator.ResetTrigger("Attack1");
@@ -123,5 +126,11 @@ public class PlayerAttack : MonoBehaviour
     public void EndAttack()
     {
         if (!canCombo) isAttacking = false;
+    }
+
+    public void ApplyAttackDamage()
+    {
+        Debug.Log("Aplicando dano de ataque: " + attackDamage);
+        punchHitBox.ApplyDamage(attackDamage);
     }
 }
