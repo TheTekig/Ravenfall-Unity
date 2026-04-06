@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ammo
   m_EditorClassIdentifier: 
   itemName: Bullet_9mm
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: -2895157278119961449, guid: 60280bdce96db704f83aad653befb03c, type: 3}
   itemType: 2
   isStackable: 1
   maxStackSize: 50
