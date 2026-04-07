@@ -11,6 +11,7 @@ public class Life : MonoBehaviour
     [SerializeField] private UnityEvent<int, int> OnSubtractHP;
     [SerializeField] private UnityEvent<int, int> OnAddHP;
     [SerializeField] private UnityEvent OnDeath;
+    [SerializeField] private InventoryHealthBar inventoryHealthBar;
 
     void Start()
     {
@@ -52,6 +53,21 @@ public class Life : MonoBehaviour
 
     void Update()
     {
-        
+        if (inventoryHealthBar != null)
+        {
+            if (actualHP > 60)
+            {
+                inventoryHealthBar.SetState(HealthState.Fine);
+            }
+            else if (actualHP > 25)
+            {
+                inventoryHealthBar.SetState(HealthState.Caution);
+            }
+            else
+            {
+                inventoryHealthBar.SetState(HealthState.Danger);
+            }
+
+        }
     }
 }

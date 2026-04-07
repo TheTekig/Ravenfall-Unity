@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Bullet_9mm
   itemIcon: {fileID: -8236230784480989476, guid: 103e1c14a6adfd949921e477b2fc3245, type: 3}
+  description: "Muni\xE7\xE3o 9mm padr\xE3o. Perfeita para fazer barulho, assustar
+    inimigos e deixar armaduras leves... levemente irritadas."
+  examinePng: {fileID: 0}
   itemType: 2
   isStackable: 1
   maxStackSize: 50
+  weaponData: {fileID: 0}
+  healAmount: 0

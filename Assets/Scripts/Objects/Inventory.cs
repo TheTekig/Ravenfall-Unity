@@ -14,6 +14,8 @@ public class Inventory : MonoBehaviour
         {
             slots.Add(new InventorySlot());
         }
+
+        if (testAmmo != null) AddItem(testAmmo, 3);
     }
 
     public bool AddItem(Item item, int quantity)
@@ -92,14 +94,4 @@ public class Inventory : MonoBehaviour
         return false; // Not enough items found
     }
 
-        void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-  
-    }
 }

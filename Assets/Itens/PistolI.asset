@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52874845d2994c43bd5bb55f2c13dcf, type: 3}
+  m_Name: PistolI
+  m_EditorClassIdentifier: 
+  itemName: Pistol 9mm
+  itemIcon: {fileID: 2096633934710783552, guid: e92ac72c56c08aa4e92dedf3766f6ba4, type: 3}
+  description: 9mm Pistol, I guess that it is userfull enoght to take someone to
+    the heaven.. or hell
+  examinePng: {fileID: 4751308909232035305, guid: fea6bc849d926f447894589f1d96a07e, type: 3}
+  itemType: 3
+  isStackable: 0
+  maxStackSize: 1
+  weaponData: {fileID: 11400000, guid: 2f94d291c3380e141bb6d47c8e01f33d, type: 2}
+  healAmount: 0
